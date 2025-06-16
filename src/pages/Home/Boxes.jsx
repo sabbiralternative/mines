@@ -1,4 +1,5 @@
 import { useState } from "react";
+import images from "../../assets/images";
 
 const Boxes = ({ isBetPlaced }) => {
   const boxArray = Array.from({ length: 25 }, (_, i) => ({
@@ -33,8 +34,11 @@ const Boxes = ({ isBetPlaced }) => {
             }`}
           >
             <div className="w-[150%] h-[150%] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-              <div className style={{ width: "100%", height: "100%" }}>
-                <canvas
+              <div
+                className="flex items-center justify-center"
+                style={{ width: "100%", height: "100%" }}
+              >
+                {/* <canvas
                   style={{
                     verticalAlign: "top",
                     width: "91px",
@@ -42,7 +46,14 @@ const Boxes = ({ isBetPlaced }) => {
                   }}
                   width={273}
                   height={273}
-                />
+                /> */}
+                {box.isBlue && (
+                  <img
+                    className="w-[40px] lg:w-[50px] h-[40px] lg:h-[50px]"
+                    src={images.diamond}
+                    alt=""
+                  />
+                )}
               </div>
             </div>
           </div>

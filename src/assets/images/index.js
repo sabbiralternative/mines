@@ -1,2 +1,3 @@
 import mines_bg from "../img/mines_bg.webp";
-export default { mines_bg };
+import diamond from "../img/diamond.png";
+export default { mines_bg, diamond };
