@@ -20,7 +20,7 @@ const Boxes = ({ isBetPlaced }) => {
   return (
     <div
       className={`grid relative items-center transition-all duration-500 bg-zinc-800 justify-center grid-cols-5 gap-0.5 p-0.5 border rounded border-zinc-700  ${
-        isBetPlaced ? "border-glow w-[90% lg:w-4/5" : "w-4/5"
+        isBetPlaced ? "border-glow w-[90%] lg:w-4/5" : "w-4/5"
       }`}
     >
       {boxes?.map((box) => {

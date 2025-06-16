@@ -64,7 +64,7 @@ const Home = () => {
           localStorage.setItem("recentResult", JSON.stringify(recentResult));
         }, 500);
       } else {
-        setIsBetPlaced(true);
+        setIsBetPlaced(false);
         toast.error(res?.Message);
       }
     } else {
