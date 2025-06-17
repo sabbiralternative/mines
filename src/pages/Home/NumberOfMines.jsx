@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 const NumberOfMines = ({ isBetPlaced }) => {
-  const [chance, setChange] = useState(96);
-  const [number, setNumber] = useState(1);
+  const [chance, setChange] = useState(84);
+  const [number, setNumber] = useState(4);
 
   const handleChangeNumber = (type) => {
     if (type === "decrease") {
