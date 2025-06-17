@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const NumberOfMines = ({ isBetPlaced }) => {
+const NumberOfMines = ({ isBetPlaced, pickRandom, isOneBoxActive }) => {
   const [chance, setChange] = useState(84);
   const [number, setNumber] = useState(4);
 
@@ -22,6 +22,7 @@ const NumberOfMines = ({ isBetPlaced }) => {
       }
     }
   };
+
   return (
     <div className="relative w-full max-w-xl mx-auto h-fit">
       <div
@@ -156,11 +157,14 @@ const NumberOfMines = ({ isBetPlaced }) => {
           <div className="flex w-full gap-2 p-2 text-xs rounded-t-2xl bg-zinc-700">
             <button
               className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 border border-amber-600 transition-all text-white px-4 py-3 rounded-lg active:scale-95 font-bold w-full disabled:opacity-50"
-              disabled
+              disabled={!isOneBoxActive}
             >
               CASHOUT
             </button>
-            <button className="bg-zinc-500 border border-zinc-600 transition-all text-white px-4 py-3 rounded-lg active:scale-95 font-bold w-full disabled:opacity-50">
+            <button
+              onClick={pickRandom}
+              className="bg-zinc-500 border border-zinc-600 transition-all text-white px-4 py-3 rounded-lg active:scale-95 font-bold w-full disabled:opacity-50"
+            >
               PICK RANDOM
             </button>
           </div>

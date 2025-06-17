@@ -4,6 +4,7 @@ import { useOrderMutation } from "../../redux/features/events/events";
 import Navbar from "./Navbar";
 import BetSlip from "./BetSlip";
 import Sidebar from "./Sidebar";
+import { placeBetSound } from "../../utils/sound";
 
 const Home = () => {
   // const recentResult = localStorage.getItem("recentResult");
@@ -42,6 +43,7 @@ const Home = () => {
 
   const handlePlaceBet = async () => {
     if (stake) {
+      placeBetSound();
       const payload = [
         {
           eventId: 20002,
@@ -64,7 +66,7 @@ const Home = () => {
           localStorage.setItem("recentResult", JSON.stringify(recentResult));
         }, 500);
       } else {
-        setIsBetPlaced(false);
+        setIsBetPlaced(true);
         toast.error(res?.Message);
       }
     } else {

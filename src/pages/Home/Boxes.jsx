@@ -1,15 +1,10 @@
-import { useState } from "react";
 import images from "../../assets/images";
+import { placeGemSound } from "../../utils/sound";
 
-const Boxes = ({ isBetPlaced }) => {
-  const boxArray = Array.from({ length: 25 }, (_, i) => ({
-    name: `box${i + 1}`,
-    isBlue: false,
-  }));
-  const [boxes, setBoxes] = useState(boxArray);
-
+const Boxes = ({ isBetPlaced, boxes, setBoxes }) => {
   const handleBoxClick = (box) => {
     if (isBetPlaced) {
+      placeGemSound();
       const findBoxAndChange = boxes?.map((boxObj) => ({
         ...boxObj,
         isBlue: box?.name === boxObj.name ? true : boxObj?.isBlue,
@@ -47,13 +42,13 @@ const Boxes = ({ isBetPlaced }) => {
                   width={273}
                   height={273}
                 /> */}
-                {box.isBlue && (
-                  <img
-                    className="w-[40px] lg:w-[50px] h-[40px] lg:h-[50px]"
-                    src={images.diamond}
-                    alt=""
-                  />
-                )}
+                <img
+                  className={`w-[40px] lg:w-[50px] h-[40px] lg:h-[50px] transform transition-transform duration-300 ${
+                    box.isBlue ? "scale-100" : "scale-0"
+                  }`}
+                  src={images.diamond}
+                  alt=""
+                />
               </div>
             </div>
           </div>
