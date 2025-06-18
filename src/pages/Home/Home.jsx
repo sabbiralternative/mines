@@ -10,6 +10,13 @@ import { generateRoundId } from "../../utils/generateRoundId";
 const Home = () => {
   // const recentResult = localStorage.getItem("recentResult");
   // const parseRecentResult = recentResult ? JSON.parse(recentResult) : [];
+  const boxArray = Array.from({ length: 25 }, (_, i) => ({
+    name: `box${i + 1}`,
+    isBlue: false,
+    id: i + 1,
+    dark: false,
+  }));
+  const [boxes, setBoxes] = useState(boxArray);
   const [number, setNumber] = useState(4);
   const [addOrder] = useOrderMutation();
   const [stake, setStake] = useState(0);
@@ -46,6 +53,7 @@ const Home = () => {
   const handlePlaceBet = async () => {
     if (stake) {
       placeBetSound();
+      setBoxes(boxArray);
 
       const round_id = generateRoundId();
       const payload = [
@@ -88,6 +96,8 @@ const Home = () => {
           <Navbar />
           <div className="flex flex-col flex-grow w-full lg:flex-row-reverse xl:max-h-[900px]">
             <BetSlip
+              boxes={boxes}
+              setBoxes={setBoxes}
               setIsBetPlaced={setIsBetPlaced}
               number={number}
               setNumber={setNumber}

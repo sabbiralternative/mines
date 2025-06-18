@@ -1,4 +1,3 @@
-import { useState } from "react";
 import images from "../../assets/images";
 import Boxes from "./Boxes";
 import NumberOfMines from "./NumberOfMines";
@@ -6,15 +5,16 @@ import { placeGemSound } from "../../utils/sound";
 import { useOrderMutation } from "../../redux/features/events/events";
 import { generateRoundId } from "../../utils/generateRoundId";
 
-const BetSlip = ({ isBetPlaced, number, setNumber, setIsBetPlaced }) => {
+const BetSlip = ({
+  isBetPlaced,
+  number,
+  setNumber,
+  setIsBetPlaced,
+  boxes,
+  setBoxes,
+}) => {
   const [addOrder] = useOrderMutation();
-  const boxArray = Array.from({ length: 25 }, (_, i) => ({
-    name: `box${i + 1}`,
-    isBlue: false,
-    id: i + 1,
-    dark: false,
-  }));
-  const [boxes, setBoxes] = useState(boxArray);
+
   const isOneBoxActive = boxes.some((box) => box.isBlue);
   const activeBoxCount = boxes.filter((box) => box.isBlue).length;
 
@@ -32,12 +32,20 @@ const BetSlip = ({ isBetPlaced, number, setNumber, setIsBetPlaced }) => {
         box_id: randomId,
         box_count: activeBoxCount,
       };
+      const updatedBoxes = boxes?.map((boxObj) =>
+        boxObj?.id === randomId
+          ? { ...boxObj, isBlue: true, showStar: true }
+          : boxObj
+      );
+      setBoxes(updatedBoxes);
+      // Hide the star after 1 seconds
+      setTimeout(() => {
+        const updatedAfterTimeout = updatedBoxes.map((boxObj) =>
+          boxObj?.id === randomId ? { ...boxObj, showStar: false } : boxObj
+        );
+        setBoxes(updatedAfterTimeout);
+      }, 1000);
 
-      const findBoxAndChange = boxes?.map((boxObj) => ({
-        ...boxObj,
-        isBlue: boxObj?.id === randomId ? true : boxObj?.isBlue,
-      }));
-      setBoxes(findBoxAndChange);
       await addOrder(payload).unwrap();
     }
   };

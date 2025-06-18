@@ -6,3 +6,6 @@ export const placeBetSound = () => {
 export const placeGemSound = () => {
   return new Audio(sound.sound_gems).play();
 };
+export const placeWinSound = () => {
+  return new Audio(sound.win).play();
+};

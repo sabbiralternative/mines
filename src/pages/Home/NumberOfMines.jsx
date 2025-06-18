@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { generateRoundId } from "../../utils/generateRoundId";
 import { useOrderMutation } from "../../redux/features/events/events";
+import { placeWinSound } from "../../utils/sound";
 
 const NumberOfMines = ({
   isBetPlaced,
@@ -36,6 +37,7 @@ const NumberOfMines = ({
   };
 
   const handleCashOut = async () => {
+    placeWinSound();
     const round_id = generateRoundId();
     const payload = {
       round_id,
@@ -91,7 +93,7 @@ const NumberOfMines = ({
                   Number of Mines
                 </span>
                 <span className="text-xs font-medium text-zinc-500">
-                  Chance ${chance}.00%
+                  Chance {chance}.00%
                 </span>
               </div>
               <div className="flex items-center w-full pl-2">
