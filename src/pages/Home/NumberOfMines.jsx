@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { generateRoundId } from "../../utils/generateRoundId";
+import { useOrderMutation } from "../../redux/features/events/events";
 
 const NumberOfMines = ({
   isBetPlaced,
@@ -6,7 +8,12 @@ const NumberOfMines = ({
   isOneBoxActive,
   number,
   setNumber,
+  setIsBetPlaced,
+  activeBoxCount,
+  boxes,
+  setBoxes,
 }) => {
+  const [addOrder] = useOrderMutation();
   const [chance, setChange] = useState(84);
 
   const handleChangeNumber = (type) => {
@@ -26,6 +33,23 @@ const NumberOfMines = ({
         setChange((prev) => prev - 4);
       }
     }
+  };
+
+  const handleCashOut = async () => {
+    const round_id = generateRoundId();
+    const payload = {
+      round_id,
+      type: "cashout",
+      box_count: activeBoxCount,
+    };
+    const findBoxAndChange = boxes?.map((boxObj) => ({
+      ...boxObj,
+      dark: boxObj?.isBlue ? false : true,
+      isBlue: true,
+    }));
+    setBoxes(findBoxAndChange);
+    await addOrder(payload).unwrap();
+    setIsBetPlaced(false);
   };
 
   return (
@@ -161,6 +185,7 @@ const NumberOfMines = ({
           </div>
           <div className="flex w-full gap-2 p-2 text-xs rounded-t-2xl bg-zinc-700">
             <button
+              onClick={handleCashOut}
               className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 border border-amber-600 transition-all text-white px-4 py-3 rounded-lg active:scale-95 font-bold w-full disabled:opacity-50"
               disabled={!isOneBoxActive}
             >

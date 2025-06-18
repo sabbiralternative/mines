@@ -6,14 +6,17 @@ import { placeGemSound } from "../../utils/sound";
 import { useOrderMutation } from "../../redux/features/events/events";
 import { generateRoundId } from "../../utils/generateRoundId";
 
-const BetSlip = ({ isBetPlaced, number, setNumber }) => {
+const BetSlip = ({ isBetPlaced, number, setNumber, setIsBetPlaced }) => {
   const [addOrder] = useOrderMutation();
   const boxArray = Array.from({ length: 25 }, (_, i) => ({
     name: `box${i + 1}`,
     isBlue: false,
     id: i + 1,
+    dark: false,
   }));
   const [boxes, setBoxes] = useState(boxArray);
+  const isOneBoxActive = boxes.some((box) => box.isBlue);
+  const activeBoxCount = boxes.filter((box) => box.isBlue).length;
 
   const pickRandom = async () => {
     const grayBoxesId = boxes.filter((box) => !box.isBlue).map((box) => box.id);
@@ -27,6 +30,7 @@ const BetSlip = ({ isBetPlaced, number, setNumber }) => {
         round_id,
         type: "select_box",
         box_id: randomId,
+        box_count: activeBoxCount,
       };
 
       const findBoxAndChange = boxes?.map((boxObj) => ({
@@ -37,8 +41,6 @@ const BetSlip = ({ isBetPlaced, number, setNumber }) => {
       await addOrder(payload).unwrap();
     }
   };
-
-  const isOneBoxActive = boxes.some((box) => box.isBlue);
 
   return (
     <div className="lg:w-[60%] w-full lg:h-full flex transition-all xl:max-h-[800px] duration-300 flex-col items-center justify-center lg:py-2 lg:pl-0 px-2 py-1">
@@ -58,17 +60,22 @@ const BetSlip = ({ isBetPlaced, number, setNumber }) => {
         <div className="flex flex-col items-center justify-between w-full max-w-xl gap-2 lg:flex-grow">
           <div className="flex flex-col items-center justify-center w-full h-full p-2">
             <Boxes
+              activeBoxCount={activeBoxCount}
               boxes={boxes}
               setBoxes={setBoxes}
               isBetPlaced={isBetPlaced}
             />
           </div>
           <NumberOfMines
+            activeBoxCount={activeBoxCount}
+            setIsBetPlaced={setIsBetPlaced}
             number={number}
             setNumber={setNumber}
             isOneBoxActive={isOneBoxActive}
             pickRandom={pickRandom}
             isBetPlaced={isBetPlaced}
+            boxes={boxes}
+            setBoxes={setBoxes}
           />
         </div>
       </div>

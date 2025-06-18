@@ -4,6 +4,7 @@ const Sidebar = ({
   handlePlaceBet,
   stake,
   setStake,
+  isBetPlaced,
 }) => {
   return (
     <div className="lg:w-[40%] relative w-full px-2 scrollbar-none lg:overflow-y-auto lg:h-[94dvh]">
@@ -12,7 +13,11 @@ const Sidebar = ({
         <span>50 - 10K</span>
       </div>
       <div className="flex flex-col items-center justify-start w-full text-white rounded-2xl lg:rounded-3xl bg-zinc-800">
-        <div className="w-full h-full flex flex-col lg:p-2">
+        <div
+          className={`w-full h-full flex flex-col lg:p-2 ${
+            isBetPlaced ? "opacity-50  pointer-events-none" : ""
+          }`}
+        >
           <div className="flex flex-col gap-2 p-1">
             <div className="grid grid-cols-2 gap-1 lg:grid-cols-1">
               <div className="flex flex-col items-center justify-between w-full gap-[1px]">

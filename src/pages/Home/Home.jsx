@@ -88,11 +88,13 @@ const Home = () => {
           <Navbar />
           <div className="flex flex-col flex-grow w-full lg:flex-row-reverse xl:max-h-[900px]">
             <BetSlip
+              setIsBetPlaced={setIsBetPlaced}
               number={number}
               setNumber={setNumber}
               isBetPlaced={isBetPlaced}
             />
             <Sidebar
+              isBetPlaced={isBetPlaced}
               handlePlaceBet={handlePlaceBet}
               handleDecreaseAmount={handleDecreaseAmount}
               handleIncreaseAmount={handleIncreaseAmount}
