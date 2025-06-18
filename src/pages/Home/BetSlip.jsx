@@ -44,7 +44,7 @@ const BetSlip = ({
           boxObj?.id === randomId ? { ...boxObj, showStar: false } : boxObj
         );
         setBoxes(updatedAfterTimeout);
-      }, 1000);
+      }, 200);
 
       await addOrder(payload).unwrap();
     }

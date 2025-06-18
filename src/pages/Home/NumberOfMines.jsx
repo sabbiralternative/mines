@@ -44,25 +44,27 @@ const NumberOfMines = ({
       type: "cashout",
       box_count: activeBoxCount,
     };
-    const findBoxAndChange = boxes?.map((boxObj) => ({
+    const findBoxAndChange = boxes?.map((boxObj, i) => ({
       ...boxObj,
       dark: boxObj?.isBlue ? false : true,
       isBlue: true,
-      showStar: true,
+      showStar: boxObj?.isBlue ? false : true,
+      bomb: i === 4 ? true : false,
     }));
 
     setBoxes(findBoxAndChange);
 
     // Hide the star after 1 seconds
     setTimeout(() => {
-      const updatedAfterTimeout = findBoxAndChange.map((boxObj) => ({
+      const updatedAfterTimeout = findBoxAndChange.map((boxObj, i) => ({
         ...boxObj,
         dark: boxObj?.isBlue ? false : true,
         isBlue: true,
         showStar: false,
+        bomb: i === 4 ? true : false,
       }));
       setBoxes(updatedAfterTimeout);
-    }, 1000);
+    }, 200);
     await addOrder(payload).unwrap();
     setIsBetPlaced(false);
   };
