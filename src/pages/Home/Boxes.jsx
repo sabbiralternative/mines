@@ -1,15 +1,26 @@
 import images from "../../assets/images";
+import { useOrderMutation } from "../../redux/features/events/events";
+import { generateRoundId } from "../../utils/generateRoundId";
 import { placeGemSound } from "../../utils/sound";
 
 const Boxes = ({ isBetPlaced, boxes, setBoxes }) => {
-  const handleBoxClick = (box) => {
+  const [addOrder] = useOrderMutation();
+  const handleBoxClick = async (box) => {
     if (isBetPlaced) {
       placeGemSound();
+      const round_id = generateRoundId();
+      const payload = {
+        round_id,
+        type: "select_box",
+        box_id: box?.id,
+      };
+
       const findBoxAndChange = boxes?.map((boxObj) => ({
         ...boxObj,
         isBlue: box?.name === boxObj.name ? true : boxObj?.isBlue,
       }));
       setBoxes(findBoxAndChange);
+      await addOrder(payload).unwrap();
     }
   };
 

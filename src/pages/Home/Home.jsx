@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import BetSlip from "./BetSlip";
 import Sidebar from "./Sidebar";
 import { placeBetSound } from "../../utils/sound";
+import { generateRoundId } from "../../utils/generateRoundId";
 
 const Home = () => {
   // const recentResult = localStorage.getItem("recentResult");
@@ -45,9 +46,8 @@ const Home = () => {
   const handlePlaceBet = async () => {
     if (stake) {
       placeBetSound();
-      const timestamp = Date.now();
-      const random = Math.floor(Math.random() * (999999 - 111111 + 1)) + 111111;
-      const round_id = timestamp + random;
+
+      const round_id = generateRoundId();
       const payload = [
         {
           eventId: 20002,

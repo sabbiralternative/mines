@@ -2,21 +2,40 @@ import { useState } from "react";
 import images from "../../assets/images";
 import Boxes from "./Boxes";
 import NumberOfMines from "./NumberOfMines";
+import { placeGemSound } from "../../utils/sound";
+import { useOrderMutation } from "../../redux/features/events/events";
+import { generateRoundId } from "../../utils/generateRoundId";
 
 const BetSlip = ({ isBetPlaced, number, setNumber }) => {
+  const [addOrder] = useOrderMutation();
   const boxArray = Array.from({ length: 25 }, (_, i) => ({
     name: `box${i + 1}`,
     isBlue: false,
     id: i + 1,
   }));
   const [boxes, setBoxes] = useState(boxArray);
-  const pickRandom = () => {
-    const random = Math.floor(Math.random() * 25) + 1;
-    const findBoxAndChange = boxes?.map((boxObj) => ({
-      ...boxObj,
-      isBlue: boxObj?.id === random ? true : boxObj?.isBlue,
-    }));
-    setBoxes(findBoxAndChange);
+
+  const pickRandom = async () => {
+    const grayBoxesId = boxes.filter((box) => !box.isBlue).map((box) => box.id);
+
+    const randomIndex = Math.floor(Math.random() * grayBoxesId.length);
+    const randomId = grayBoxesId[randomIndex];
+    if (randomId) {
+      placeGemSound();
+      const round_id = generateRoundId();
+      const payload = {
+        round_id,
+        type: "select_box",
+        box_id: randomId,
+      };
+
+      const findBoxAndChange = boxes?.map((boxObj) => ({
+        ...boxObj,
+        isBlue: boxObj?.id === randomId ? true : boxObj?.isBlue,
+      }));
+      setBoxes(findBoxAndChange);
+      await addOrder(payload).unwrap();
+    }
   };
 
   const isOneBoxActive = boxes.some((box) => box.isBlue);
