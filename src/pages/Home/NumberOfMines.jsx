@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { generateRoundId } from "../../utils/generateRoundId";
 import { useOrderMutation } from "../../redux/features/events/events";
-import { placeWinSound } from "../../utils/sound";
+import { playWinSound } from "../../utils/sound";
 
 const NumberOfMines = ({
   isBetPlaced,
@@ -37,12 +37,13 @@ const NumberOfMines = ({
   };
 
   const handleCashOut = async () => {
-    placeWinSound();
+    playWinSound();
     const round_id = generateRoundId();
     const payload = {
       round_id,
       type: "cashout",
       box_count: activeBoxCount,
+      eventId: 20002,
     };
     const findBoxAndChange = boxes?.map((boxObj, i) => ({
       ...boxObj,
@@ -56,18 +57,50 @@ const NumberOfMines = ({
 
     // Hide the star after 1 seconds
     setTimeout(() => {
-      const updatedAfterTimeout = findBoxAndChange.map((boxObj, i) => ({
+      const updatedAfterTimeout = findBoxAndChange.map((boxObj) => ({
         ...boxObj,
-        dark: boxObj?.isBlue ? false : true,
-        isBlue: true,
         showStar: false,
-        bomb: i === 4 ? true : false,
       }));
       setBoxes(updatedAfterTimeout);
-    }, 200);
+    }, 1000);
     await addOrder(payload).unwrap();
     setIsBetPlaced(false);
   };
+
+  const findMines = boxes?.find((box) => box?.id === 5 && box?.isBlue);
+
+  useEffect(() => {
+    if (findMines && isBetPlaced) {
+      playWinSound();
+      const round_id = generateRoundId();
+      const payload = {
+        round_id,
+        type: "cashout",
+        box_count: activeBoxCount,
+        eventId: 20002,
+      };
+      const findBoxAndChange = boxes?.map((boxObj, i) => ({
+        ...boxObj,
+        dark: boxObj?.isBlue ? false : true,
+        isBlue: true,
+        showStar: boxObj?.isBlue ? false : true,
+        bomb: i === 4 ? true : false,
+      }));
+
+      setBoxes(findBoxAndChange);
+
+      // Hide the star after 1 seconds
+      setTimeout(() => {
+        const updatedAfterTimeout = findBoxAndChange.map((boxObj) => ({
+          ...boxObj,
+          showStar: false,
+        }));
+        setBoxes(updatedAfterTimeout);
+      }, 1000);
+      addOrder(payload).unwrap();
+      setIsBetPlaced(false);
+    }
+  }, [findMines, isBetPlaced]);
 
   return (
     <div className="relative w-full max-w-xl mx-auto h-fit">

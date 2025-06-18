@@ -1,7 +1,7 @@
 import images from "../../assets/images";
 import Boxes from "./Boxes";
 import NumberOfMines from "./NumberOfMines";
-import { placeGemSound } from "../../utils/sound";
+import { playGemSound } from "../../utils/sound";
 import { useOrderMutation } from "../../redux/features/events/events";
 import { generateRoundId } from "../../utils/generateRoundId";
 
@@ -24,13 +24,14 @@ const BetSlip = ({
     const randomIndex = Math.floor(Math.random() * grayBoxesId.length);
     const randomId = grayBoxesId[randomIndex];
     if (randomId) {
-      placeGemSound();
+      playGemSound();
       const round_id = generateRoundId();
       const payload = {
         round_id,
         type: "select_box",
         box_id: randomId,
         box_count: activeBoxCount,
+        eventId: 20002,
       };
       const updatedBoxes = boxes?.map((boxObj) =>
         boxObj?.id === randomId
@@ -44,7 +45,7 @@ const BetSlip = ({
           boxObj?.id === randomId ? { ...boxObj, showStar: false } : boxObj
         );
         setBoxes(updatedAfterTimeout);
-      }, 200);
+      }, 1000);
 
       await addOrder(payload).unwrap();
     }

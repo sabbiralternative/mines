@@ -1,18 +1,19 @@
 import { useOrderMutation } from "../../redux/features/events/events";
 import { generateRoundId } from "../../utils/generateRoundId";
-import { placeGemSound } from "../../utils/sound";
+import { playSoundMine } from "../../utils/sound";
 
 const Boxes = ({ isBetPlaced, boxes, setBoxes, activeBoxCount }) => {
   const [addOrder] = useOrderMutation();
   const handleBoxClick = async (box) => {
     if (isBetPlaced) {
-      placeGemSound();
+      playSoundMine();
       const round_id = generateRoundId();
       const payload = {
         round_id,
         type: "select_box",
         box_id: box?.id,
         box_count: activeBoxCount,
+        eventId: 20002,
       };
 
       const updatedBoxes = boxes?.map((boxObj) =>
@@ -28,7 +29,7 @@ const Boxes = ({ isBetPlaced, boxes, setBoxes, activeBoxCount }) => {
           box?.name === boxObj.name ? { ...boxObj, showStar: false } : boxObj
         );
         setBoxes(updatedAfterTimeout);
-      }, 200);
+      }, 1000);
 
       await addOrder(payload).unwrap();
     }

@@ -4,7 +4,7 @@ import { useOrderMutation } from "../../redux/features/events/events";
 import Navbar from "./Navbar";
 import BetSlip from "./BetSlip";
 import Sidebar from "./Sidebar";
-import { placeBetSound } from "../../utils/sound";
+import { playBetSound } from "../../utils/sound";
 import { generateRoundId } from "../../utils/generateRoundId";
 
 const Home = () => {
@@ -52,7 +52,7 @@ const Home = () => {
 
   const handlePlaceBet = async () => {
     if (stake) {
-      placeBetSound();
+      playBetSound();
       setBoxes(boxArray);
 
       const round_id = generateRoundId();
