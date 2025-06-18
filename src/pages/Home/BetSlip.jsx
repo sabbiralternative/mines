@@ -3,7 +3,7 @@ import images from "../../assets/images";
 import Boxes from "./Boxes";
 import NumberOfMines from "./NumberOfMines";
 
-const BetSlip = ({ isBetPlaced }) => {
+const BetSlip = ({ isBetPlaced, number, setNumber }) => {
   const boxArray = Array.from({ length: 25 }, (_, i) => ({
     name: `box${i + 1}`,
     isBlue: false,
@@ -45,6 +45,8 @@ const BetSlip = ({ isBetPlaced }) => {
             />
           </div>
           <NumberOfMines
+            number={number}
+            setNumber={setNumber}
             isOneBoxActive={isOneBoxActive}
             pickRandom={pickRandom}
             isBetPlaced={isBetPlaced}

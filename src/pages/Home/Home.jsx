@@ -9,6 +9,7 @@ import { placeBetSound } from "../../utils/sound";
 const Home = () => {
   // const recentResult = localStorage.getItem("recentResult");
   // const parseRecentResult = recentResult ? JSON.parse(recentResult) : [];
+  const [number, setNumber] = useState(4);
   const [addOrder] = useOrderMutation();
   const [stake, setStake] = useState(0);
   const [totalWin, setTotalWin] = useState(null);
@@ -44,12 +45,18 @@ const Home = () => {
   const handlePlaceBet = async () => {
     if (stake) {
       placeBetSound();
+      const timestamp = Date.now();
+      const random = Math.floor(Math.random() * (999999 - 111111 + 1)) + 111111;
+      const round_id = timestamp + random;
       const payload = [
         {
           eventId: 20002,
           eventName: "Mines",
           isback: 0,
           stake,
+          type: "bet",
+          mines_count: number,
+          round_id,
         },
       ];
 
@@ -80,7 +87,11 @@ const Home = () => {
         <div className="flex flex-col w-full h-full min-h-min xl:justify-center xl:items-center">
           <Navbar />
           <div className="flex flex-col flex-grow w-full lg:flex-row-reverse xl:max-h-[900px]">
-            <BetSlip isBetPlaced={isBetPlaced} />
+            <BetSlip
+              number={number}
+              setNumber={setNumber}
+              isBetPlaced={isBetPlaced}
+            />
             <Sidebar
               handlePlaceBet={handlePlaceBet}
               handleDecreaseAmount={handleDecreaseAmount}
