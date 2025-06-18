@@ -46,7 +46,9 @@ const Boxes = ({ isBetPlaced, boxes, setBoxes, activeBoxCount }) => {
             onClick={() => handleBoxClick(box)}
             key={box.name}
             className={`w-full aspect-square relative flex items-center animate__animated justify-center rounded-sm   ${
-              box.isBlue ? "bg-sky-500/30" : "bg-zinc-700"
+              box.isBlue
+                ? "bg-sky-500/30 pointer-events-none"
+                : "bg-zinc-700 cursor-pointer"
             } ${box?.isBlue && box?.dark ? "opacity-50" : "opacity-100"}`}
           >
             <div className="w-[150%] h-[150%] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
@@ -89,7 +91,7 @@ const Boxes = ({ isBetPlaced, boxes, setBoxes, activeBoxCount }) => {
                   <path fill="#7BB8CC" d="m140 46-33-23H84l15.5 23z" />
 
                   <path
-                    className={`transform transition-transform duration-300 delay-200 ${
+                    className={`  delay-200 ${
                       box.isBlue && box?.showStar ? "scale-100" : "scale-0"
                     } `}
                     fill="#fff"
