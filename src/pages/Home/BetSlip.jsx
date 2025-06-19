@@ -11,7 +11,6 @@ const BetSlip = ({
   boxes,
   setBoxes,
   addOrder,
-  data,
 }) => {
   const isOneBoxActive = boxes.some((box) => box.isBlue);
   const activeBoxCount = boxes.filter((box) => box.isBlue).length;
@@ -40,8 +39,7 @@ const BetSlip = ({
             ...boxObj,
             dark: boxObj?.isBlue ? false : true,
             isBlue: true,
-            bomb: boxObj?.id === randomId ? true : false,
-            mine: data?.all?.[i],
+            bomb: res?.all?.[i] === 0 ? true : false,
           }));
           setBoxes(updatedBoxes);
           setIsBetPlaced(false);
@@ -86,7 +84,6 @@ const BetSlip = ({
               isBetPlaced={isBetPlaced}
               setIsBetPlaced={setIsBetPlaced}
               addOrder={addOrder}
-              data={data}
             />
           </div>
           <NumberOfMines

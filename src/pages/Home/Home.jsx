@@ -18,7 +18,7 @@ const Home = () => {
   }));
   const [boxes, setBoxes] = useState(boxArray);
   const [number, setNumber] = useState(4);
-  const [addOrder, { data }] = useOrderMutation();
+  const [addOrder] = useOrderMutation();
   const [stake, setStake] = useState(0);
   const [totalWin, setTotalWin] = useState(null);
   const [isBetPlaced, setIsBetPlaced] = useState(false);
@@ -105,7 +105,6 @@ const Home = () => {
               number={number}
               setNumber={setNumber}
               isBetPlaced={isBetPlaced}
-              data={data}
             />
             <Sidebar
               isBetPlaced={isBetPlaced}
