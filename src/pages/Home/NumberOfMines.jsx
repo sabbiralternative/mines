@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { generateRoundId } from "../../utils/generateRoundId";
 import { useOrderMutation } from "../../redux/features/events/events";
 import { playSoundMine, playWinSound } from "../../utils/sound";
 
@@ -38,9 +37,9 @@ const NumberOfMines = ({
 
   const handleCashOut = async () => {
     playWinSound();
-    const round_id = generateRoundId();
+    const round_id = sessionStorage.getItem("round_id");
     const payload = {
-      round_id,
+      round_id: Number(round_id),
       type: "cashout",
       box_count: activeBoxCount,
       eventId: 20002,
@@ -64,9 +63,9 @@ const NumberOfMines = ({
   useEffect(() => {
     if (findMines && isBetPlaced) {
       playSoundMine();
-      const round_id = generateRoundId();
+      const round_id = sessionStorage.getItem("round_id");
       const payload = {
-        round_id,
+        round_id: Number(round_id),
         type: "cashout",
         box_count: activeBoxCount,
         eventId: 20002,

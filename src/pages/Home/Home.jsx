@@ -56,6 +56,8 @@ const Home = () => {
       setBoxes(boxArray);
 
       const round_id = generateRoundId();
+      sessionStorage.removeItem("round_id");
+      sessionStorage.setItem("round_id", round_id);
       const payload = [
         {
           eventId: 20002,

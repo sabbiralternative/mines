@@ -3,7 +3,6 @@ import Boxes from "./Boxes";
 import NumberOfMines from "./NumberOfMines";
 import { playGemSound } from "../../utils/sound";
 import { useOrderMutation } from "../../redux/features/events/events";
-import { generateRoundId } from "../../utils/generateRoundId";
 
 const BetSlip = ({
   isBetPlaced,
@@ -25,9 +24,9 @@ const BetSlip = ({
     const randomId = grayBoxesId[randomIndex];
     if (randomId) {
       playGemSound();
-      const round_id = generateRoundId();
+      const round_id = sessionStorage.getItem("round_id");
       const payload = {
-        round_id,
+        round_id: Number(round_id),
         type: "select_box",
         box_id: randomId,
         box_count: activeBoxCount,

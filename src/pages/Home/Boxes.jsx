@@ -1,5 +1,4 @@
 import { useOrderMutation } from "../../redux/features/events/events";
-import { generateRoundId } from "../../utils/generateRoundId";
 import { playSoundMine } from "../../utils/sound";
 
 const Boxes = ({ isBetPlaced, boxes, setBoxes, activeBoxCount }) => {
@@ -7,9 +6,9 @@ const Boxes = ({ isBetPlaced, boxes, setBoxes, activeBoxCount }) => {
   const handleBoxClick = async (box) => {
     if (isBetPlaced) {
       playSoundMine();
-      const round_id = generateRoundId();
+      const round_id = sessionStorage.getItem("round_id");
       const payload = {
-        round_id,
+        round_id: Number(round_id),
         type: "select_box",
         box_id: box?.id,
         box_count: activeBoxCount,
