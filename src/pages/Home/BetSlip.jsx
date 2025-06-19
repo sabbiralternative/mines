@@ -1,7 +1,7 @@
 import images from "../../assets/images";
 import Boxes from "./Boxes";
 import NumberOfMines from "./NumberOfMines";
-import { playGemSound } from "../../utils/sound";
+import { playGemSound, playSoundMine } from "../../utils/sound";
 import { useOrderMutation } from "../../redux/features/events/events";
 
 const BetSlip = ({
@@ -23,7 +23,6 @@ const BetSlip = ({
     const randomIndex = Math.floor(Math.random() * grayBoxesId.length);
     const randomId = grayBoxesId[randomIndex];
     if (randomId) {
-      playGemSound();
       const round_id = sessionStorage.getItem("round_id");
       const payload = [
         {
@@ -34,14 +33,32 @@ const BetSlip = ({
           eventId: 20002,
         },
       ];
-      const updatedBoxes = boxes?.map((boxObj) =>
-        boxObj?.id === randomId
-          ? { ...boxObj, isBlue: true, showStar: true }
-          : boxObj
-      );
-      setBoxes(updatedBoxes);
 
-      await addOrder(payload).unwrap();
+      const res = await addOrder(payload).unwrap();
+      if (res?.success) {
+        if (res?.gem === 0) {
+          const updatedBoxes = boxes?.map((boxObj) => ({
+            ...boxObj,
+            dark: boxObj?.isBlue ? false : true,
+            isBlue: true,
+            bomb: boxObj?.id === randomId ? true : false,
+          }));
+          setBoxes(updatedBoxes);
+          setIsBetPlaced(false);
+          playSoundMine();
+        } else {
+          const updatedBoxes = boxes?.map((boxObj) =>
+            boxObj?.id === randomId
+              ? {
+                  ...boxObj,
+                  isBlue: true,
+                }
+              : boxObj
+          );
+          setBoxes(updatedBoxes);
+          playGemSound();
+        }
+      }
     }
   };
 
@@ -67,6 +84,7 @@ const BetSlip = ({
               boxes={boxes}
               setBoxes={setBoxes}
               isBetPlaced={isBetPlaced}
+              setIsBetPlaced={setIsBetPlaced}
             />
           </div>
           <NumberOfMines

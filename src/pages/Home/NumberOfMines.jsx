@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useOrderMutation } from "../../redux/features/events/events";
-import { playSoundMine, playWinSound } from "../../utils/sound";
+import { playWinSound } from "../../utils/sound";
 
 const NumberOfMines = ({
   isBetPlaced,
@@ -56,36 +56,10 @@ const NumberOfMines = ({
 
     setBoxes(findBoxAndChange);
 
-    await addOrder(payload).unwrap();
+    const res = await addOrder(payload).unwrap();
+    console.log(res);
     setIsBetPlaced(false);
   };
-
-  const findMines = boxes?.find((box) => box?.id === 5 && box?.isBlue);
-
-  useEffect(() => {
-    if (findMines && isBetPlaced) {
-      playSoundMine();
-      // const round_id = sessionStorage.getItem("round_id");
-      // const payload = {
-      //   round_id: Number(round_id),
-      //   type: "cashout",
-      //   box_count: activeBoxCount,
-      //   eventId: 20002,
-      // };
-      const findBoxAndChange = boxes?.map((boxObj, i) => ({
-        ...boxObj,
-        dark: boxObj?.isBlue ? false : true,
-        isBlue: true,
-        showStar: boxObj?.isBlue ? false : true,
-        bomb: i === 4 ? true : false,
-      }));
-
-      setBoxes(findBoxAndChange);
-
-      // addOrder(payload).unwrap();
-      setIsBetPlaced(false);
-    }
-  }, [findMines, isBetPlaced]);
 
   return (
     <div className="relative w-full max-w-xl mx-auto h-fit">

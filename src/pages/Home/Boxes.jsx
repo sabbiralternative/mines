@@ -1,11 +1,16 @@
 import { useOrderMutation } from "../../redux/features/events/events";
-import { playSoundMine } from "../../utils/sound";
+import { playGemSound, playSoundMine } from "../../utils/sound";
 
-const Boxes = ({ isBetPlaced, boxes, setBoxes, activeBoxCount }) => {
+const Boxes = ({
+  isBetPlaced,
+  boxes,
+  setBoxes,
+  activeBoxCount,
+  setIsBetPlaced,
+}) => {
   const [addOrder] = useOrderMutation();
   const handleBoxClick = async (box) => {
     if (isBetPlaced) {
-      playSoundMine();
       const round_id = sessionStorage.getItem("round_id");
       const payload = [
         {
@@ -17,14 +22,31 @@ const Boxes = ({ isBetPlaced, boxes, setBoxes, activeBoxCount }) => {
         },
       ];
 
-      const updatedBoxes = boxes?.map((boxObj) =>
-        box?.name === boxObj.name
-          ? { ...boxObj, isBlue: true, showStar: true }
-          : boxObj
-      );
-      setBoxes(updatedBoxes);
-
-      await addOrder(payload).unwrap();
+      const res = await addOrder(payload).unwrap();
+      if (res?.success) {
+        if (res?.gem === 0) {
+          const updatedBoxes = boxes?.map((boxObj) => ({
+            ...boxObj,
+            isBlue: true,
+            bomb: boxObj?.id === box?.id ? true : false,
+            dark: boxObj?.isBlue ? false : true,
+          }));
+          setBoxes(updatedBoxes);
+          setIsBetPlaced(false);
+          playSoundMine();
+        } else {
+          const updatedBoxes = boxes?.map((boxObj) =>
+            box?.name === boxObj.name
+              ? {
+                  ...boxObj,
+                  isBlue: true,
+                }
+              : boxObj
+          );
+          setBoxes(updatedBoxes);
+          playGemSound();
+        }
+      }
     }
   };
 
