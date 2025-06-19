@@ -63,13 +63,13 @@ const NumberOfMines = ({
   useEffect(() => {
     if (findMines && isBetPlaced) {
       playSoundMine();
-      const round_id = sessionStorage.getItem("round_id");
-      const payload = {
-        round_id: Number(round_id),
-        type: "cashout",
-        box_count: activeBoxCount,
-        eventId: 20002,
-      };
+      // const round_id = sessionStorage.getItem("round_id");
+      // const payload = {
+      //   round_id: Number(round_id),
+      //   type: "cashout",
+      //   box_count: activeBoxCount,
+      //   eventId: 20002,
+      // };
       const findBoxAndChange = boxes?.map((boxObj, i) => ({
         ...boxObj,
         dark: boxObj?.isBlue ? false : true,
@@ -88,7 +88,7 @@ const NumberOfMines = ({
         }));
         setBoxes(updatedAfterTimeout);
       }, 1000);
-      addOrder(payload).unwrap();
+      // addOrder(payload).unwrap();
       setIsBetPlaced(false);
     }
   }, [findMines, isBetPlaced]);

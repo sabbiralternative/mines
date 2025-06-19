@@ -419,8 +419,8 @@ html * {
   height: 50px;
   position: absolute;
   transform: translate(-50%, -50%);
-  top: 50%;
-  left: 40%;
+  top: 35%;
+  left: 60%;
   background: url("/src/assets/img/sprite.png");
   background-size: 100px auto;
   animation: kick 0.5s steps(5) forwards, fadeout 0.5s ease-in-out forwards;
