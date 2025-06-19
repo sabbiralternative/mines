@@ -18,7 +18,7 @@ const Home = () => {
   }));
   const [boxes, setBoxes] = useState(boxArray);
   const [number, setNumber] = useState(4);
-  const [addOrder] = useOrderMutation();
+  const [addOrder, { data }] = useOrderMutation();
   const [stake, setStake] = useState(0);
   const [totalWin, setTotalWin] = useState(null);
   const [isBetPlaced, setIsBetPlaced] = useState(false);
@@ -98,12 +98,14 @@ const Home = () => {
           <Navbar />
           <div className="flex flex-col flex-grow w-full lg:flex-row-reverse xl:max-h-[900px]">
             <BetSlip
+              addOrder={addOrder}
               boxes={boxes}
               setBoxes={setBoxes}
               setIsBetPlaced={setIsBetPlaced}
               number={number}
               setNumber={setNumber}
               isBetPlaced={isBetPlaced}
+              data={data}
             />
             <Sidebar
               isBetPlaced={isBetPlaced}

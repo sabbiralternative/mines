@@ -2,7 +2,6 @@ import images from "../../assets/images";
 import Boxes from "./Boxes";
 import NumberOfMines from "./NumberOfMines";
 import { playGemSound, playSoundMine } from "../../utils/sound";
-import { useOrderMutation } from "../../redux/features/events/events";
 
 const BetSlip = ({
   isBetPlaced,
@@ -11,9 +10,9 @@ const BetSlip = ({
   setIsBetPlaced,
   boxes,
   setBoxes,
+  addOrder,
+  data,
 }) => {
-  const [addOrder] = useOrderMutation();
-
   const isOneBoxActive = boxes.some((box) => box.isBlue);
   const activeBoxCount = boxes.filter((box) => box.isBlue).length;
 
@@ -37,11 +36,12 @@ const BetSlip = ({
       const res = await addOrder(payload).unwrap();
       if (res?.success) {
         if (res?.gem === 0) {
-          const updatedBoxes = boxes?.map((boxObj) => ({
+          const updatedBoxes = boxes?.map((boxObj, i) => ({
             ...boxObj,
             dark: boxObj?.isBlue ? false : true,
             isBlue: true,
             bomb: boxObj?.id === randomId ? true : false,
+            mine: data?.all?.[i],
           }));
           setBoxes(updatedBoxes);
           setIsBetPlaced(false);
@@ -85,9 +85,12 @@ const BetSlip = ({
               setBoxes={setBoxes}
               isBetPlaced={isBetPlaced}
               setIsBetPlaced={setIsBetPlaced}
+              addOrder={addOrder}
+              data={data}
             />
           </div>
           <NumberOfMines
+            addOrder={addOrder}
             activeBoxCount={activeBoxCount}
             setIsBetPlaced={setIsBetPlaced}
             number={number}

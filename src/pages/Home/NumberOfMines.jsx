@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useOrderMutation } from "../../redux/features/events/events";
 import { playWinSound } from "../../utils/sound";
 
 const NumberOfMines = ({
@@ -12,8 +11,8 @@ const NumberOfMines = ({
   activeBoxCount,
   boxes,
   setBoxes,
+  addOrder,
 }) => {
-  const [addOrder] = useOrderMutation();
   const [chance, setChange] = useState(84);
 
   const handleChangeNumber = (type) => {
