@@ -23,14 +23,6 @@ const Boxes = ({ isBetPlaced, boxes, setBoxes, activeBoxCount }) => {
       );
       setBoxes(updatedBoxes);
 
-      // Hide the star after 1 seconds
-      setTimeout(() => {
-        const updatedAfterTimeout = updatedBoxes.map((boxObj) =>
-          box?.name === boxObj.name ? { ...boxObj, showStar: false } : boxObj
-        );
-        setBoxes(updatedAfterTimeout);
-      }, 1000);
-
       await addOrder(payload).unwrap();
     }
   };
@@ -198,9 +190,7 @@ const Boxes = ({ isBetPlaced, boxes, setBoxes, activeBoxCount }) => {
                     <path fill="#7BB8CC" d="m140 46-33-23H84l15.5 23z" />
 
                     <path
-                      className={`delay-200 ${
-                        box.isBlue && box?.showStar ? "scale-100" : "scale-0"
-                      } `}
+                      className={`${box.isBlue ? "animate-star-burst" : ""}`}
                       fill="#fff"
                       d="M104.048 2.955c.298-.924 1.606-.924 1.904 0l5.861 18.199a1 1 0 0 0 .655.648l18.462 5.743c.938.292.938 1.618 0 1.91l-18.462 5.743a1 1 0 0 0-.655.648l-5.861 18.199c-.298.924-1.606.924-1.904 0l-5.86-18.199a1 1 0 0 0-.656-.648L79.07 29.455c-.937-.292-.937-1.618 0-1.91l18.462-5.743a1 1 0 0 0 .655-.648zM32.049 72.93c.3-.922 1.603-.922 1.902 0l3.697 11.388a1 1 0 0 0 .656.647l11.6 3.58c.94.29.94 1.62 0 1.91l-11.6 3.58a1 1 0 0 0-.656.647l-3.697 11.388c-.3.922-1.603.922-1.902 0l-3.697-11.388a1 1 0 0 0-.656-.647l-11.6-3.58c-.94-.29-.94-1.62 0-1.91l11.6-3.58a1 1 0 0 0 .656-.647z"
                     />

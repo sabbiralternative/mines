@@ -433,3 +433,30 @@ html * {
     background-position: 0 -1920px;
   }
 }
+
+@keyframes star-burst {
+  0% {
+    /* transform: scale(0); */
+    opacity: 0;
+  }
+  10% {
+    /* transform: scale(1.2); */
+    opacity: 0.5;
+  }
+  30% {
+    /* transform: scale(1); */
+    opacity: 1;
+  }
+  80% {
+    /* transform: scale(1); */
+    opacity: 1;
+  }
+  100% {
+    /* transform: scale(0); */
+    opacity: 0;
+  }
+}
+
+.animate-star-burst {
+  animation: star-burst 1s ease-in-out forwards;
+}

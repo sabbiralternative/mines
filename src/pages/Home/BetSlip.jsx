@@ -39,13 +39,6 @@ const BetSlip = ({
           : boxObj
       );
       setBoxes(updatedBoxes);
-      // Hide the star after 1 seconds
-      setTimeout(() => {
-        const updatedAfterTimeout = updatedBoxes.map((boxObj) =>
-          boxObj?.id === randomId ? { ...boxObj, showStar: false } : boxObj
-        );
-        setBoxes(updatedAfterTimeout);
-      }, 1000);
 
       await addOrder(payload).unwrap();
     }

@@ -55,14 +55,6 @@ const NumberOfMines = ({
 
     setBoxes(findBoxAndChange);
 
-    // Hide the star after 1 seconds
-    setTimeout(() => {
-      const updatedAfterTimeout = findBoxAndChange.map((boxObj) => ({
-        ...boxObj,
-        showStar: false,
-      }));
-      setBoxes(updatedAfterTimeout);
-    }, 1000);
     await addOrder(payload).unwrap();
     setIsBetPlaced(false);
   };
