@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { generateRoundId } from "../../utils/generateRoundId";
 import { useOrderMutation } from "../../redux/features/events/events";
-import { playWinSound } from "../../utils/sound";
+import { playSoundMine, playWinSound } from "../../utils/sound";
 
 const NumberOfMines = ({
   isBetPlaced,
@@ -63,7 +63,7 @@ const NumberOfMines = ({
 
   useEffect(() => {
     if (findMines && isBetPlaced) {
-      playWinSound();
+      playSoundMine();
       const round_id = generateRoundId();
       const payload = {
         round_id,

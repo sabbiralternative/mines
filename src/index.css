@@ -415,22 +415,34 @@ html * {
 }
 
 .mines_container {
-  width: 384px;
-  height: 200px;
+  width: 50px;
+  height: 50px;
   position: absolute;
   transform: translate(-50%, -50%);
-  left: 50%;
   top: 50%;
-  background: url("/src/assets/img/fire.jpg");
-  animation: kick 0.5s steps(7) infinite;
+  left: 40%;
+  background: url("/src/assets/img/sprite.png");
+  background-size: 100px auto;
+  animation: kick 0.5s steps(5) forwards, fadeout 0.5s ease-in-out forwards;
 }
+
 @keyframes kick {
-  0% {
+  from {
     background-position: 0 0;
   }
-  /* Use height of image here as y position */
+  to {
+    background-position: 0 -250px; /* 5 frames * 50px/frame */
+  }
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+    z-index: 999;
+  }
   100% {
-    background-position: 0 -1920px;
+    opacity: 0;
+    z-index: 0;
   }
 }
 
