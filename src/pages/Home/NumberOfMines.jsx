@@ -38,12 +38,14 @@ const NumberOfMines = ({
   const handleCashOut = async () => {
     playWinSound();
     const round_id = sessionStorage.getItem("round_id");
-    const payload = {
-      round_id: Number(round_id),
-      type: "cashout",
-      box_count: activeBoxCount,
-      eventId: 20002,
-    };
+    const payload = [
+      {
+        round_id: Number(round_id),
+        type: "cashout",
+        box_count: activeBoxCount,
+        eventId: 20002,
+      },
+    ];
     const findBoxAndChange = boxes?.map((boxObj, i) => ({
       ...boxObj,
       dark: boxObj?.isBlue ? false : true,

@@ -7,13 +7,15 @@ const Boxes = ({ isBetPlaced, boxes, setBoxes, activeBoxCount }) => {
     if (isBetPlaced) {
       playSoundMine();
       const round_id = sessionStorage.getItem("round_id");
-      const payload = {
-        round_id: Number(round_id),
-        type: "select_box",
-        box_id: box?.id,
-        box_count: activeBoxCount,
-        eventId: 20002,
-      };
+      const payload = [
+        {
+          round_id: Number(round_id),
+          type: "select_box",
+          box_id: box?.id,
+          box_count: activeBoxCount,
+          eventId: 20002,
+        },
+      ];
 
       const updatedBoxes = boxes?.map((boxObj) =>
         box?.name === boxObj.name
