@@ -8,6 +8,7 @@ import { playBetSound } from "../../utils/sound";
 import { generateRoundId } from "../../utils/generateRoundId";
 import { useAuth } from "../../hooks/auth";
 import WinModal from "./WinModal";
+import { useSound } from "../../context/ApiProvider";
 
 const Home = () => {
   // const recentResult = localStorage.getItem("recentResult");
@@ -29,6 +30,7 @@ const Home = () => {
   const [next_multiplier, setNextMultiplier] = useState(0);
   const [selectedBoxes, setSelectedBoxes] = useState([]);
   const [winMultiplier, setWinMultiplier] = useState(null);
+  const { sound } = useSound();
 
   const handleDecreaseAmount = () => {
     const decreaseAmount = stake / 2;
@@ -59,9 +61,11 @@ const Home = () => {
 
   const handlePlaceBet = async () => {
     if (stake) {
+      if (sound) {
+        playBetSound();
+      }
       setWinMultiplier(null);
       setSelectedBoxes([]);
-      playBetSound();
       setBoxes(boxArray);
 
       const round_id = generateRoundId();
@@ -83,8 +87,10 @@ const Home = () => {
       if (res?.success) {
         handleAuth();
         setIsBetPlaced(true);
-        setCurrentMultiplier(Number(res?.current_multiplier) * stake);
-        setNextMultiplier(Number(res?.next_multiplier) * stake);
+        setCurrentMultiplier(
+          (Number(res?.current_multiplier) * stake).toFixed(2)
+        );
+        setNextMultiplier((Number(res?.next_multiplier) * stake).toFixed(2));
         setTimeout(() => {
           let recentResult = [];
           const recentStoredResult = localStorage.getItem("recentResult");

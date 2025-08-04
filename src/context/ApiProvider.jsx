@@ -7,6 +7,8 @@ import images from "../assets/images";
 export const ApiContext = createContext(null);
 
 const ApiProvider = ({ children }) => {
+  const storedSound = sessionStorage.getItem("sound");
+  const [sound, setSound] = useState(storedSound ? false : true);
   const [noticeLoaded, setNoticeLoaded] = useState(false);
   const [logo, setLogo] = useState("");
   const baseUrl = notice?.result?.Settings?.baseUrl;
@@ -60,7 +62,7 @@ const ApiProvider = ({ children }) => {
     return;
   }
 
-  const stateInfo = { logo };
+  const stateInfo = { logo, sound, setSound };
   return (
     <ApiContext.Provider value={stateInfo}>{children}</ApiContext.Provider>
   );
@@ -70,5 +72,8 @@ export const useLogo = () => {
   const context = useContext(ApiContext);
   return context;
 };
-
+export const useSound = () => {
+  const context = useContext(ApiContext);
+  return context;
+};
 export default ApiProvider;

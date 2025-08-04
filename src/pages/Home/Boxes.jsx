@@ -1,3 +1,4 @@
+import { useSound } from "../../context/ApiProvider";
 import { playGemSound, playSoundMine } from "../../utils/sound";
 
 const Boxes = ({
@@ -13,6 +14,7 @@ const Boxes = ({
   selectedBoxes,
   setSelectedBoxes,
 }) => {
+  const { sound } = useSound();
   const handleBoxClick = async (box) => {
     if (isBetPlaced) {
       const round_id = sessionStorage.getItem("round_id");
@@ -39,10 +41,14 @@ const Boxes = ({
           }));
           setBoxes(updatedBoxes);
           setIsBetPlaced(false);
-          playSoundMine();
+          if (sound) {
+            playSoundMine();
+          }
         } else {
-          setCurrentMultiplier(Number(res?.current_multiplier) * stake);
-          setNextMultiplier(Number(res?.next_multiplier) * stake);
+          setCurrentMultiplier(
+            (Number(res?.current_multiplier) * stake).toFixed(2)
+          );
+          setNextMultiplier((Number(res?.next_multiplier) * stake).toFixed(2));
           const updatedBoxes = boxes?.map((boxObj) =>
             box?.name === boxObj.name
               ? {
@@ -52,7 +58,9 @@ const Boxes = ({
               : boxObj
           );
           setBoxes(updatedBoxes);
-          playGemSound();
+          if (sound) {
+            playGemSound();
+          }
         }
       }
     }

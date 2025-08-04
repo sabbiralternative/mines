@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { playWinSound } from "../../utils/sound";
 import { useAuth } from "../../hooks/auth";
+import { useSound } from "../../context/ApiProvider";
 
 const NumberOfMines = ({
   isBetPlaced,
@@ -18,6 +19,7 @@ const NumberOfMines = ({
   selectedBoxes,
   setWinMultiplier,
 }) => {
+  const { sound } = useSound();
   const [chance, setChange] = useState(84);
   const { mutate: handleAuth } = useAuth();
   const handleChangeNumber = (type) => {
@@ -40,7 +42,6 @@ const NumberOfMines = ({
   };
 
   const handleCashOut = async () => {
-    playWinSound();
     const round_id = sessionStorage.getItem("round_id");
     const payload = [
       {
@@ -54,6 +55,9 @@ const NumberOfMines = ({
 
     const res = await addOrder(payload).unwrap();
     if (res?.success) {
+      if (sound) {
+        playWinSound();
+      }
       setWinMultiplier(res?.win_multiplier);
       handleAuth();
       const findBoxAndChange = boxes?.map((boxObj, i) => ({

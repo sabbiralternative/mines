@@ -2,6 +2,7 @@ import images from "../../assets/images";
 import Boxes from "./Boxes";
 import NumberOfMines from "./NumberOfMines";
 import { playGemSound, playSoundMine } from "../../utils/sound";
+import { useSound } from "../../context/ApiProvider";
 
 const BetSlip = ({
   isBetPlaced,
@@ -20,6 +21,7 @@ const BetSlip = ({
   setSelectedBoxes,
   setWinMultiplier,
 }) => {
+  const { sound } = useSound();
   const isOneBoxActive = boxes.some((box) => box.isBlue);
   const activeBoxCount = boxes.filter((box) => box.isBlue).length;
 
@@ -52,7 +54,9 @@ const BetSlip = ({
           }));
           setBoxes(updatedBoxes);
           setIsBetPlaced(false);
-          playSoundMine();
+          if (sound) {
+            playSoundMine();
+          }
         } else {
           setCurrentMultiplier(Number(res?.current_multiplier) * stake);
           setNextMultiplier(Number(res?.next_multiplier) * stake);
@@ -65,7 +69,9 @@ const BetSlip = ({
               : boxObj
           );
           setBoxes(updatedBoxes);
-          playGemSound();
+          if (sound) {
+            playGemSound();
+          }
         }
       }
     }
