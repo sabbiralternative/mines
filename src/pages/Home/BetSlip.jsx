@@ -18,6 +18,7 @@ const BetSlip = ({
   stake,
   selectedBoxes,
   setSelectedBoxes,
+  setWinMultiplier,
 }) => {
   const isOneBoxActive = boxes.some((box) => box.isBlue);
   const activeBoxCount = boxes.filter((box) => box.isBlue).length;
@@ -102,6 +103,7 @@ const BetSlip = ({
             />
           </div>
           <NumberOfMines
+            setWinMultiplier={setWinMultiplier}
             setSelectedBoxes={setSelectedBoxes}
             selectedBoxes={selectedBoxes}
             current_multiplier={current_multiplier}

@@ -16,6 +16,7 @@ const NumberOfMines = ({
   current_multiplier,
   next_multiplier,
   selectedBoxes,
+  setWinMultiplier,
 }) => {
   const [chance, setChange] = useState(84);
   const { mutate: handleAuth } = useAuth();
@@ -53,6 +54,7 @@ const NumberOfMines = ({
 
     const res = await addOrder(payload).unwrap();
     if (res?.success) {
+      setWinMultiplier(res?.win_multiplier);
       handleAuth();
       const findBoxAndChange = boxes?.map((boxObj, i) => ({
         ...boxObj,
@@ -63,6 +65,9 @@ const NumberOfMines = ({
       }));
       setBoxes(findBoxAndChange);
       setIsBetPlaced(false);
+      setTimeout(() => {
+        setWinMultiplier(null);
+      }, 2000);
     }
   };
 

@@ -7,6 +7,7 @@ import Sidebar from "./Sidebar";
 import { playBetSound } from "../../utils/sound";
 import { generateRoundId } from "../../utils/generateRoundId";
 import { useAuth } from "../../hooks/auth";
+import WinModal from "./WinModal";
 
 const Home = () => {
   // const recentResult = localStorage.getItem("recentResult");
@@ -27,6 +28,7 @@ const Home = () => {
   const [current_multiplier, setCurrentMultiplier] = useState(0);
   const [next_multiplier, setNextMultiplier] = useState(0);
   const [selectedBoxes, setSelectedBoxes] = useState([]);
+  const [winMultiplier, setWinMultiplier] = useState(null);
 
   const handleDecreaseAmount = () => {
     const decreaseAmount = stake / 2;
@@ -57,6 +59,7 @@ const Home = () => {
 
   const handlePlaceBet = async () => {
     if (stake) {
+      setWinMultiplier(null);
       setSelectedBoxes([]);
       playBetSound();
       setBoxes(boxArray);
@@ -102,11 +105,18 @@ const Home = () => {
 
   return (
     <main className="w-full h-full max-w-xl mx-auto lg:max-w-[1600px] lg:my-auto">
+      {winMultiplier && (
+        <WinModal
+          winMultiplier={winMultiplier}
+          current_multiplier={current_multiplier}
+        />
+      )}
       <main className="w-full overflow-y-auto h-dvh min-h-dvh">
         <div className="flex flex-col w-full h-full min-h-min xl:justify-center xl:items-center">
           <Navbar />
           <div className="flex flex-col flex-grow w-full lg:flex-row-reverse xl:max-h-[900px]">
             <BetSlip
+              setWinMultiplier={setWinMultiplier}
               setSelectedBoxes={setSelectedBoxes}
               selectedBoxes={selectedBoxes}
               stake={stake}
