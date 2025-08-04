@@ -12,6 +12,8 @@ const NumberOfMines = ({
   boxes,
   setBoxes,
   addOrder,
+  current_multiplier,
+  next_multiplier,
 }) => {
   const [chance, setChange] = useState(84);
 
@@ -45,19 +47,19 @@ const NumberOfMines = ({
         eventId: 20002,
       },
     ];
-    const findBoxAndChange = boxes?.map((boxObj, i) => ({
-      ...boxObj,
-      dark: boxObj?.isBlue ? false : true,
-      isBlue: true,
-      showStar: boxObj?.isBlue ? false : true,
-      bomb: i === 4 ? true : false,
-    }));
-
-    setBoxes(findBoxAndChange);
 
     const res = await addOrder(payload).unwrap();
-    console.log(res);
-    setIsBetPlaced(false);
+    if (res?.success) {
+      const findBoxAndChange = boxes?.map((boxObj, i) => ({
+        ...boxObj,
+        dark: boxObj?.isBlue ? false : true,
+        isBlue: true,
+        showStar: boxObj?.isBlue ? false : true,
+        bomb: res?.all?.[i] === 0 ? true : false,
+      }));
+      setBoxes(findBoxAndChange);
+      setIsBetPlaced(false);
+    }
   };
 
   return (
@@ -170,7 +172,7 @@ const NumberOfMines = ({
             style={{ opacity: 1 }}
           >
             <div className="flex w-1/3 p-1 items-center justify-center transition-all duration-500 bg-gradient-to-r text-amber-500 ">
-              ₹ 0.00
+              ₹ {current_multiplier}
             </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -188,7 +190,7 @@ const NumberOfMines = ({
               <path d="M13 7l5 5l-5 5" />
             </svg>
             <div className="flex w-1/3 p-1 gap-1 items-center text-zinc-100 justify-center transition-all duration-500 bg-gradient-to-r ">
-              ₹ 51.50
+              ₹ {next_multiplier}
             </div>
           </div>
           <div className="flex w-full gap-2 p-2 text-xs rounded-t-2xl bg-zinc-700">

@@ -7,6 +7,9 @@ const Boxes = ({
   activeBoxCount,
   setIsBetPlaced,
   addOrder,
+  setNextMultiplier,
+  setCurrentMultiplier,
+  stake,
 }) => {
   const handleBoxClick = async (box) => {
     if (isBetPlaced) {
@@ -34,6 +37,8 @@ const Boxes = ({
           setIsBetPlaced(false);
           playSoundMine();
         } else {
+          setCurrentMultiplier(Number(res?.current_multiplier) * stake);
+          setNextMultiplier(Number(res?.next_multiplier) * stake);
           const updatedBoxes = boxes?.map((boxObj) =>
             box?.name === boxObj.name
               ? {

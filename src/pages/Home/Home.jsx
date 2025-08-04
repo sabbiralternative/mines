@@ -22,6 +22,8 @@ const Home = () => {
   const [stake, setStake] = useState(0);
   const [totalWin, setTotalWin] = useState(null);
   const [isBetPlaced, setIsBetPlaced] = useState(false);
+  const [current_multiplier, setCurrentMultiplier] = useState(0);
+  const [next_multiplier, setNextMultiplier] = useState(0);
 
   const handleDecreaseAmount = () => {
     const decreaseAmount = stake / 2;
@@ -73,6 +75,8 @@ const Home = () => {
       const res = await addOrder(payload).unwrap();
       if (res?.success) {
         setIsBetPlaced(true);
+        setCurrentMultiplier(Number(res?.current_multiplier) * stake);
+        setNextMultiplier(Number(res?.next_multiplier) * stake);
         setTimeout(() => {
           let recentResult = [];
           const recentStoredResult = localStorage.getItem("recentResult");
@@ -83,7 +87,7 @@ const Home = () => {
           localStorage.setItem("recentResult", JSON.stringify(recentResult));
         }, 500);
       } else {
-        setIsBetPlaced(true);
+        setIsBetPlaced(false);
         toast.error(res?.Message);
       }
     } else {
@@ -98,6 +102,11 @@ const Home = () => {
           <Navbar />
           <div className="flex flex-col flex-grow w-full lg:flex-row-reverse xl:max-h-[900px]">
             <BetSlip
+              stake={stake}
+              current_multiplier={current_multiplier}
+              next_multiplier={next_multiplier}
+              setCurrentMultiplier={setCurrentMultiplier}
+              setNextMultiplier={setNextMultiplier}
               addOrder={addOrder}
               boxes={boxes}
               setBoxes={setBoxes}

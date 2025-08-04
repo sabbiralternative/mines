@@ -11,6 +11,11 @@ const BetSlip = ({
   boxes,
   setBoxes,
   addOrder,
+  next_multiplier,
+  current_multiplier,
+  setNextMultiplier,
+  setCurrentMultiplier,
+  stake,
 }) => {
   const isOneBoxActive = boxes.some((box) => box.isBlue);
   const activeBoxCount = boxes.filter((box) => box.isBlue).length;
@@ -45,6 +50,8 @@ const BetSlip = ({
           setIsBetPlaced(false);
           playSoundMine();
         } else {
+          setCurrentMultiplier(Number(res?.current_multiplier) * stake);
+          setNextMultiplier(Number(res?.next_multiplier) * stake);
           const updatedBoxes = boxes?.map((boxObj) =>
             boxObj?.id === randomId
               ? {
@@ -78,6 +85,9 @@ const BetSlip = ({
         <div className="flex flex-col items-center justify-between w-full max-w-xl gap-2 lg:flex-grow">
           <div className="flex flex-col items-center justify-center w-full h-full p-2">
             <Boxes
+              setCurrentMultiplier={setCurrentMultiplier}
+              setNextMultiplier={setNextMultiplier}
+              stake={stake}
               activeBoxCount={activeBoxCount}
               boxes={boxes}
               setBoxes={setBoxes}
@@ -87,6 +97,8 @@ const BetSlip = ({
             />
           </div>
           <NumberOfMines
+            current_multiplier={current_multiplier}
+            next_multiplier={next_multiplier}
             addOrder={addOrder}
             activeBoxCount={activeBoxCount}
             setIsBetPlaced={setIsBetPlaced}
