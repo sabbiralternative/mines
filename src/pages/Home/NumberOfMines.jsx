@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { playWinSound } from "../../utils/sound";
+import { useAuth } from "../../hooks/auth";
 
 const NumberOfMines = ({
   isBetPlaced,
@@ -14,9 +15,10 @@ const NumberOfMines = ({
   addOrder,
   current_multiplier,
   next_multiplier,
+  selectedBoxes,
 }) => {
   const [chance, setChange] = useState(84);
-
+  const { mutate: handleAuth } = useAuth();
   const handleChangeNumber = (type) => {
     if (type === "decrease") {
       if (number === 1) {
@@ -45,11 +47,13 @@ const NumberOfMines = ({
         type: "cashout",
         box_count: activeBoxCount,
         eventId: 20002,
+        selected_tiles: selectedBoxes,
       },
     ];
 
     const res = await addOrder(payload).unwrap();
     if (res?.success) {
+      handleAuth();
       const findBoxAndChange = boxes?.map((boxObj, i) => ({
         ...boxObj,
         dark: boxObj?.isBlue ? false : true,

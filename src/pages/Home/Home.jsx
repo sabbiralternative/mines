@@ -6,6 +6,7 @@ import BetSlip from "./BetSlip";
 import Sidebar from "./Sidebar";
 import { playBetSound } from "../../utils/sound";
 import { generateRoundId } from "../../utils/generateRoundId";
+import { useAuth } from "../../hooks/auth";
 
 const Home = () => {
   // const recentResult = localStorage.getItem("recentResult");
@@ -16,6 +17,7 @@ const Home = () => {
     id: i + 1,
     dark: false,
   }));
+  const { mutate: handleAuth } = useAuth();
   const [boxes, setBoxes] = useState(boxArray);
   const [number, setNumber] = useState(4);
   const [addOrder] = useOrderMutation();
@@ -24,6 +26,7 @@ const Home = () => {
   const [isBetPlaced, setIsBetPlaced] = useState(false);
   const [current_multiplier, setCurrentMultiplier] = useState(0);
   const [next_multiplier, setNextMultiplier] = useState(0);
+  const [selectedBoxes, setSelectedBoxes] = useState([]);
 
   const handleDecreaseAmount = () => {
     const decreaseAmount = stake / 2;
@@ -54,6 +57,7 @@ const Home = () => {
 
   const handlePlaceBet = async () => {
     if (stake) {
+      setSelectedBoxes([]);
       playBetSound();
       setBoxes(boxArray);
 
@@ -74,6 +78,7 @@ const Home = () => {
 
       const res = await addOrder(payload).unwrap();
       if (res?.success) {
+        handleAuth();
         setIsBetPlaced(true);
         setCurrentMultiplier(Number(res?.current_multiplier) * stake);
         setNextMultiplier(Number(res?.next_multiplier) * stake);
@@ -102,6 +107,8 @@ const Home = () => {
           <Navbar />
           <div className="flex flex-col flex-grow w-full lg:flex-row-reverse xl:max-h-[900px]">
             <BetSlip
+              setSelectedBoxes={setSelectedBoxes}
+              selectedBoxes={selectedBoxes}
               stake={stake}
               current_multiplier={current_multiplier}
               next_multiplier={next_multiplier}

@@ -10,6 +10,8 @@ const Boxes = ({
   setNextMultiplier,
   setCurrentMultiplier,
   stake,
+  selectedBoxes,
+  setSelectedBoxes,
 }) => {
   const handleBoxClick = async (box) => {
     if (isBetPlaced) {
@@ -21,11 +23,13 @@ const Boxes = ({
           box_id: box?.id,
           box_count: activeBoxCount,
           eventId: 20002,
+          selected_tiles: [...selectedBoxes, box?.id],
         },
       ];
 
       const res = await addOrder(payload).unwrap();
       if (res?.success) {
+        setSelectedBoxes((prev) => [...prev, box?.id]);
         if (res?.gem === 0) {
           const updatedBoxes = boxes?.map((boxObj, i) => ({
             ...boxObj,

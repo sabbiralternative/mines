@@ -16,13 +16,14 @@ const BetSlip = ({
   setNextMultiplier,
   setCurrentMultiplier,
   stake,
+  selectedBoxes,
+  setSelectedBoxes,
 }) => {
   const isOneBoxActive = boxes.some((box) => box.isBlue);
   const activeBoxCount = boxes.filter((box) => box.isBlue).length;
 
   const pickRandom = async () => {
     const grayBoxesId = boxes.filter((box) => !box.isBlue).map((box) => box.id);
-
     const randomIndex = Math.floor(Math.random() * grayBoxesId.length);
     const randomId = grayBoxesId[randomIndex];
     if (randomId) {
@@ -34,11 +35,13 @@ const BetSlip = ({
           box_id: randomId,
           box_count: activeBoxCount,
           eventId: 20002,
+          selected_tiles: [...selectedBoxes, randomId],
         },
       ];
 
       const res = await addOrder(payload).unwrap();
       if (res?.success) {
+        setSelectedBoxes((prev) => [...prev, randomId]);
         if (res?.gem === 0) {
           const updatedBoxes = boxes?.map((boxObj, i) => ({
             ...boxObj,
@@ -85,6 +88,8 @@ const BetSlip = ({
         <div className="flex flex-col items-center justify-between w-full max-w-xl gap-2 lg:flex-grow">
           <div className="flex flex-col items-center justify-center w-full h-full p-2">
             <Boxes
+              setSelectedBoxes={setSelectedBoxes}
+              selectedBoxes={selectedBoxes}
               setCurrentMultiplier={setCurrentMultiplier}
               setNextMultiplier={setNextMultiplier}
               stake={stake}
@@ -97,6 +102,8 @@ const BetSlip = ({
             />
           </div>
           <NumberOfMines
+            setSelectedBoxes={setSelectedBoxes}
+            selectedBoxes={selectedBoxes}
             current_multiplier={current_multiplier}
             next_multiplier={next_multiplier}
             addOrder={addOrder}
