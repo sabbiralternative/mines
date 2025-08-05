@@ -88,7 +88,7 @@ const NumberOfMines = ({
       const timeout = setTimeout(() => {
         setCurrentAnimation("");
         setNextAnimation("");
-      }, 1000);
+      }, 400);
       return () => clearTimeout(timeout);
     }
   }, [current_multiplier, next_multiplier]);
