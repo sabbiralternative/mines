@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { playWinSound } from "../../utils/sound";
 import { useAuth } from "../../hooks/auth";
 import { useSound } from "../../context/ApiProvider";
@@ -22,6 +22,9 @@ const NumberOfMines = ({
   const { sound } = useSound();
   const [chance, setChange] = useState(84);
   const { mutate: handleAuth } = useAuth();
+  const [currentAnimation, setCurrentAnimation] = useState("");
+  const [nextAnimation, setNextAnimation] = useState("");
+
   const handleChangeNumber = (type) => {
     if (type === "decrease") {
       if (number === 1) {
@@ -74,6 +77,21 @@ const NumberOfMines = ({
       }, 2000);
     }
   };
+
+  useEffect(() => {
+    if (current_multiplier && next_multiplier) {
+      setCurrentAnimation(
+        "animate__animated animate__slideInRight animate__faster"
+      );
+      setNextAnimation("animate__animated animate__zoomIn animate__faster");
+
+      const timeout = setTimeout(() => {
+        setCurrentAnimation("");
+        setNextAnimation("");
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [current_multiplier, next_multiplier]);
 
   return (
     <div className="relative w-full max-w-xl mx-auto h-fit">
@@ -184,7 +202,9 @@ const NumberOfMines = ({
             className="flex items-center justify-center  w-full overflow-hidden text-sm font-semibold"
             style={{ opacity: 1 }}
           >
-            <div className="flex w-1/3 p-1 items-center justify-center transition-all duration-500 bg-gradient-to-r text-amber-500 ">
+            <div
+              className={`flex w-1/3 p-1 items-center justify-center transition-all duration-500 bg-gradient-to-r text-amber-500 ${currentAnimation}`}
+            >
               ₹ {current_multiplier}
             </div>
             <svg
@@ -202,7 +222,9 @@ const NumberOfMines = ({
               <path d="M7 7l5 5l-5 5" />
               <path d="M13 7l5 5l-5 5" />
             </svg>
-            <div className="flex w-1/3 p-1 gap-1 items-center text-zinc-100 justify-center transition-all duration-500 bg-gradient-to-r ">
+            <div
+              className={`flex w-1/3 p-1 gap-1 items-center text-zinc-100 justify-center transition-all duration-500 bg-gradient-to-r ${nextAnimation}`}
+            >
               ₹ {next_multiplier}
             </div>
           </div>

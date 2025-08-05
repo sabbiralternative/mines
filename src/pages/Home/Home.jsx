@@ -7,8 +7,8 @@ import Sidebar from "./Sidebar";
 import { playBetSound } from "../../utils/sound";
 import { generateRoundId } from "../../utils/generateRoundId";
 import { useAuth } from "../../hooks/auth";
-import WinModal from "./WinModal";
 import { useSound } from "../../context/ApiProvider";
+import RuleModal from "./RuleModal";
 
 const Home = () => {
   // const recentResult = localStorage.getItem("recentResult");
@@ -31,6 +31,7 @@ const Home = () => {
   const [selectedBoxes, setSelectedBoxes] = useState([]);
   const [winMultiplier, setWinMultiplier] = useState(null);
   const { sound } = useSound();
+  const [showRule, setShowRule] = useState(false);
 
   const handleDecreaseAmount = () => {
     const decreaseAmount = stake / 2;
@@ -110,46 +111,45 @@ const Home = () => {
   };
 
   return (
-    <main className="w-full h-full max-w-xl mx-auto lg:max-w-[1600px] lg:my-auto">
-      {winMultiplier && (
-        <WinModal
-          winMultiplier={winMultiplier}
-          current_multiplier={current_multiplier}
-        />
-      )}
-      <main className="w-full overflow-y-auto h-dvh min-h-dvh">
-        <div className="flex flex-col w-full h-full min-h-min xl:justify-center xl:items-center">
-          <Navbar />
-          <div className="flex flex-col flex-grow w-full lg:flex-row-reverse xl:max-h-[900px]">
-            <BetSlip
-              setWinMultiplier={setWinMultiplier}
-              setSelectedBoxes={setSelectedBoxes}
-              selectedBoxes={selectedBoxes}
-              stake={stake}
-              current_multiplier={current_multiplier}
-              next_multiplier={next_multiplier}
-              setCurrentMultiplier={setCurrentMultiplier}
-              setNextMultiplier={setNextMultiplier}
-              addOrder={addOrder}
-              boxes={boxes}
-              setBoxes={setBoxes}
-              setIsBetPlaced={setIsBetPlaced}
-              number={number}
-              setNumber={setNumber}
-              isBetPlaced={isBetPlaced}
-            />
-            <Sidebar
-              isBetPlaced={isBetPlaced}
-              handlePlaceBet={handlePlaceBet}
-              handleDecreaseAmount={handleDecreaseAmount}
-              handleIncreaseAmount={handleIncreaseAmount}
-              stake={stake}
-              setStake={setStake}
-            />
+    <>
+      <main className="w-full h-full max-w-xl mx-auto lg:max-w-[1600px] lg:my-auto">
+        <main className="w-full overflow-y-auto h-dvh min-h-dvh">
+          <div className="flex flex-col w-full h-full min-h-min xl:justify-center xl:items-center">
+            <Navbar />
+            <div className="flex flex-col flex-grow w-full lg:flex-row-reverse xl:max-h-[900px]">
+              <BetSlip
+                winMultiplier={winMultiplier}
+                setWinMultiplier={setWinMultiplier}
+                setSelectedBoxes={setSelectedBoxes}
+                selectedBoxes={selectedBoxes}
+                stake={stake}
+                current_multiplier={current_multiplier}
+                next_multiplier={next_multiplier}
+                setCurrentMultiplier={setCurrentMultiplier}
+                setNextMultiplier={setNextMultiplier}
+                addOrder={addOrder}
+                boxes={boxes}
+                setBoxes={setBoxes}
+                setIsBetPlaced={setIsBetPlaced}
+                number={number}
+                setNumber={setNumber}
+                isBetPlaced={isBetPlaced}
+              />
+              <Sidebar
+                setShowRule={setShowRule}
+                isBetPlaced={isBetPlaced}
+                handlePlaceBet={handlePlaceBet}
+                handleDecreaseAmount={handleDecreaseAmount}
+                handleIncreaseAmount={handleIncreaseAmount}
+                stake={stake}
+                setStake={setStake}
+              />
+            </div>
           </div>
-        </div>
+        </main>
       </main>
-    </main>
+      {showRule && <RuleModal setShowRule={setShowRule} />}
+    </>
   );
 };
 

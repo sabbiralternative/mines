@@ -3,6 +3,7 @@ import Boxes from "./Boxes";
 import NumberOfMines from "./NumberOfMines";
 import { playGemSound, playSoundMine } from "../../utils/sound";
 import { useSound } from "../../context/ApiProvider";
+import WinModal from "./WinModal";
 
 const BetSlip = ({
   isBetPlaced,
@@ -20,6 +21,7 @@ const BetSlip = ({
   selectedBoxes,
   setSelectedBoxes,
   setWinMultiplier,
+  winMultiplier,
 }) => {
   const { sound } = useSound();
   const isOneBoxActive = boxes.some((box) => box.isBlue);
@@ -126,6 +128,12 @@ const BetSlip = ({
             setBoxes={setBoxes}
           />
         </div>
+        {winMultiplier && (
+          <WinModal
+            winMultiplier={winMultiplier}
+            current_multiplier={current_multiplier}
+          />
+        )}
       </div>
     </div>
   );

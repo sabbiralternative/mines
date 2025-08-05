@@ -1,5 +1,4 @@
 import { useSound } from "../../context/ApiProvider";
-import { IoVolumeMuteOutline } from "react-icons/io5";
 
 const Sidebar = ({
   handleIncreaseAmount,
@@ -8,6 +7,7 @@ const Sidebar = ({
   stake,
   setStake,
   isBetPlaced,
+  setShowRule,
 }) => {
   const { sound, setSound } = useSound();
   const handleSoundToggle = () => {
@@ -97,17 +97,9 @@ const Sidebar = ({
                 </button>
               </div>
             </div>
-            <div className="flex items-center justify-between w-full p-1 rounded-md">
-              <div className="flex items-center justify-start w-1/2 gap-2">
-                <div className="relative w-8 h-5 rounded-full cursor-pointer transition-colors duration-200 ease-in-out bg-zinc-700 undefined">
-                  <div className="absolute w-4 h-4 rounded-full top-0.5 transition-transform duration-200 ease-in-out translate-x-0.5 bg-zinc-400" />
-                </div>
-                <span className="text-sm font-medium text-zinc-400">
-                  Auto Bet
-                </span>
-              </div>
+            <div className="flex items-center justify-end w-full p-1 rounded-md">
               <div className="flex items-center justify-center gap-2 text-white/50">
-                <button>
+                <button onClick={() => setShowRule(true)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={20}
@@ -147,7 +139,23 @@ const Sidebar = ({
                       <path d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5" />
                     </svg>
                   ) : (
-                    <IoVolumeMuteOutline size={20} color="#fff" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-zinc-500"
+                    >
+                      <path d="M15 8a5 5 0 0 1 1.912 4.934m-1.377 2.602a5 5 0 0 1 -.535 .464"></path>
+                      <path d="M17.7 5a9 9 0 0 1 2.362 11.086m-1.676 2.299a9 9 0 0 1 -.686 .615"></path>
+                      <path d="M9.069 5.054l.431 -.554a.8 .8 0 0 1 1.5 .5v2m0 4v8a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l1.294 -1.664"></path>
+                      <path d="M3 3l18 18"></path>
+                    </svg>
                   )}
                 </button>
               </div>
